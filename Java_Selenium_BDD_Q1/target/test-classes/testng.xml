@@ -1,0 +1,7 @@
+<suite name="BDD Test Suite">
+    <test name="Run Cucumber Tests">
+        <classes>
+            <class name="runner.TestRunner"/>
+        </classes>
+    </test>
+</suite>

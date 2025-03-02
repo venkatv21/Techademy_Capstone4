@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="8.673">
+    <testcase classname="Verify The Internet App Functionalities" name="Validate different functionalities on the web application" time="8.462">
+        <system-out><![CDATA[Given User navigates to "http://the-internet.herokuapp.com".................passed
+When User verifies the page title as "The Internet".........................passed
+And User clicks on "A/B Testing"............................................passed
+Then User verifies the text on the page as "A/B Test Variation 1"...........passed
+When User navigates back to the home page...................................passed
+And User clicks on "Dropdown"...............................................passed
+Then User selects "Option 1" from the dropdown and verifies selection.......passed
+When User navigates back to the home page...................................passed
+And User clicks on "Frames".................................................passed
+Then User verifies "Nested Frames" and "iFrame" links exist.................passed
+]]></system-out>
+    </testcase>
+</testsuite>

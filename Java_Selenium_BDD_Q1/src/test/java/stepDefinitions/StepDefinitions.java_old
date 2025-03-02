@@ -1,0 +1,89 @@
+package stepDefinitions;
+
+import base.BaseTest;
+import org.openqa.selenium.By;
+import pages.*;
+import io.cucumber.java.en.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+
+public class StepDefinitions {
+    WebDriver driver = BaseTest.getDriver();
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+    HomePage home = new HomePage(driver);
+    ABTestingPage abTest = new ABTestingPage(driver);
+    DropdownPage dropdown = new DropdownPage(driver);
+    FramesPage frames = new FramesPage(driver);
+
+    @Given("User navigates to {string}")
+    public void user_navigates_to(String url) {
+        driver.get(url);
+    }
+
+    @When("User verifies the page title as {string}")
+    public void user_verifies_the_page_title_as(String expectedTitle) {
+        wait.until(ExpectedConditions.titleIs(expectedTitle));
+        Assert.assertEquals(driver.getTitle(), expectedTitle, "Page title does not match!");
+    }
+
+    @When("User clicks on {string}")
+    public void user_clicks_on(String page) {
+        switch (page) {
+            case "A/B Testing":
+                wait.until(ExpectedConditions.elementToBeClickable(home.getABTestingLink())).click();
+                break;
+            case "Dropdown":
+                wait.until(ExpectedConditions.elementToBeClickable(home.getDropdownLink())).click();
+                break;
+            case "Frames":
+                wait.until(ExpectedConditions.elementToBeClickable(home.getFramesLink())).click();
+                break;
+            default:
+                Assert.fail("Invalid page selection!");
+        }
+    }
+
+    @Then("User verifies the text on the page as {string}")
+    public void user_verifies_the_text_on_the_page_as(String expectedText) throws InterruptedException {
+        // Wait for the element to be present and visible
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h3[contains(text(), 'A/B Test')]")));
+        wait.until(ExpectedConditions.visibilityOf(abTest.getABTestingText()));
+
+        // Get the actual text from the page
+        String actualText = abTest.getABTestingText().getText();
+        System.out.println("Actual Text Found: " + actualText);
+
+        // Define possible expected variations
+        List<String> expectedVariations = Arrays.asList("A/B Test Variation 1", "A/B Test Control");
+
+        // Check if actual text matches any of the expected variations
+        boolean matchFound = expectedVariations.contains(actualText);
+
+        // Assert if match is found, otherwise fail the test
+        Assert.assertTrue(matchFound, "Text verification failed! Found: " + actualText + ", but expected one of: " + expectedVariations);
+    }
+
+    @When("User navigates back to the home page")
+    public void user_navigates_back_to_the_home_page() {
+        driver.navigate().back();
+        wait.until(ExpectedConditions.titleIs("The Internet"));
+    }
+
+    @Then("User selects {string} from the dropdown and verifies selection")
+    public void user_selects_from_the_dropdown_and_verifies_selection(String option) {
+        dropdown.selectOption(option);
+        Assert.assertTrue(dropdown.isOptionSelected(option), "Dropdown selection failed!");
+    }
+
+    @Then("User verifies {string} and {string} links exist")
+    public void verifyFrames(String nested, String iframe) {
+        Assert.assertTrue(frames.verifyFramesLinks(), "Frames links verification failed!");
+    }
+}
