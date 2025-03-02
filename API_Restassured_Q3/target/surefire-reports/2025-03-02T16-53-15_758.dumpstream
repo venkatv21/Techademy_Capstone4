@@ -1,0 +1,5 @@
+# Created at 2025-03-02T16:53:17.554
+Boot Manifest-JAR contains absolute paths in classpath 'D:\TestPython\API_Venkatesh\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
